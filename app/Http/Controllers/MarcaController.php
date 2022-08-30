@@ -68,6 +68,18 @@ class MarcaController extends Controller
         }
 
 
+        if($request->method() === 'PATCH'){
+            foreach($marca->rules() as $input => $regra ){
+                if(array_key_exists($input, $request->all())){
+                    $regraDinamicas[$input] = $regra;
+                }
+            }
+
+            $request->validate($regraDinamicas, $marca->feedback());
+        }else{
+            $request->validate($marca->rules(), $marca->feedback());
+        }
+
         if($request->file('imagem')){
             Storage::disk('public')->delete($marca->imagem);
         } //remove o arquivo antigo caso outro seja requisitado
@@ -94,6 +106,7 @@ class MarcaController extends Controller
         }
         
         Storage::disk('public')->delete($marca->imagem);
+        
         $marca->delete();
         return response()->json(['msg' => 'Marca removida com sucesso!'], 200);
     }
