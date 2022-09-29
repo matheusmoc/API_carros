@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Modelo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,6 +35,6 @@ class Marca extends Model
 
     public function modelos() {
         //UMA marca POSSUI MUITOS modelos
-        return $this->hasMany('App\Models\Modelo');
+        return $this->hasMany(Modelo::class);
     }
 }

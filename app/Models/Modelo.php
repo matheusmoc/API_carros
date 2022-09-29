@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Marca;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +26,6 @@ class Modelo extends Model
 
     public function marca() {
         //UM modelo PERTENCE a UMA marca
-        return $this->belongsTo('App\Models\Marca');
+        return $this->belongsTo(Marca::class);
     }
 }
