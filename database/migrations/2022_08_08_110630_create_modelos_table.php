@@ -23,7 +23,6 @@ class CreateModelosTable extends Migration
             $table->boolean('air_bag');
             $table->boolean('abs');
             $table->timestamps();
-
             //foreign key (constraints)
             $table->foreign('marca_id')->references('id')->on('marcas');
         });
