@@ -12,34 +12,38 @@ class ModeloController extends Controller
         $this->modelo = $modelo;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        return response()->json($this->modelo->with('marca')->get(), 200);
+        //consulta de strings que queremos analisar
+        $modelos = array();
+
+        if($request->has('atributos')){
+            $atributos = $request->atributos;
+            $modelos = $this->modelo->selectRaw( $atributos )->with('marca')->get();
+            
+            //'id','nome','imagem'
+            //"id,nome,imagem"
+            
+            // dd($request->atributos);
+            
+        }else{
+            $modelos = $this->modelo->with('marca')->get();
+        }
+       
+        //$this->modelo->with('marca')->get()
+
+        return response()->json($modelos, 200);
         //all() -> criando um obj de consulta + get() = collection
         //get() -> modificar a consulta -> collection
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $request->validate($this->modelo->rules());
@@ -60,12 +64,6 @@ class ModeloController extends Controller
         return response()->json($modelo, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Modelo  $modelo
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $modelo = $this->modelo->with('marca')->find($id);
@@ -76,24 +74,12 @@ class ModeloController extends Controller
         return response()->json($modelo, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Modelo  $modelo
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Modelo $modelo)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Modelo  $modelo
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $modelo = $this->modelo->find($id);
