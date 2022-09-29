@@ -18,17 +18,22 @@ class ModeloController extends Controller
         //consulta de strings que queremos analisar
         $modelos = array();
 
+        if($request->has('atributos_marca')){
+            $atributos_marca = $request->atributos_marca;
+            $modelos = $this->modelo->with('marca:id,'.$atributos_marca);
+        }else{
+            $modelos = $this->modelo->with('marca');
+        }
+
         if($request->has('atributos')){
             $atributos = $request->atributos;
-            $modelos = $this->modelo->selectRaw( $atributos )->with('marca')->get();
-            
+            $modelos = $this->modelo->selectRaw( $atributos )->get();
+
             //'id','nome','imagem'
             //"id,nome,imagem"
-            
-            // dd($request->atributos);
-            
+
         }else{
-            $modelos = $this->modelo->with('marca')->get();
+            $modelos =  $modelos->get();
         }
        
         //$this->modelo->with('marca')->get()
