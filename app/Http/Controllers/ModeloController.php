@@ -17,23 +17,22 @@ class ModeloController extends Controller
     public function index(Request $request)
     {
         $modeloRepository = new ModeloRepository($this->modelo);
-        
-        if($request->has('atributos_marca')){
+
+        if($request->has('atributos_marca')) {
             $atributos_marca = 'marca:id,'.$request->atributos_marca;
-            $modeloRepository->selectAtributosRegistrosRelacionados( $atributos_marca );
-        }else{
+            $modeloRepository->selectAtributosRegistrosRelacionados($atributos_marca);
+        } else {
             $modeloRepository->selectAtributosRegistrosRelacionados('marca');
         }
 
-
-        if($request->has('filtro')){
+        if($request->has('filtro')) {
             $modeloRepository->filtro($request->filtro);
         }
-         
-        if($request->has('atributos')){
-            $modeloRepository->selectAtributos($request->atributos);
 
-        }
+        if($request->has('atributos')) {
+            $modeloRepository->selectAtributos($request->atributos);
+        } 
+
         return response()->json($modeloRepository->getResultado(), 200);
     }
 
