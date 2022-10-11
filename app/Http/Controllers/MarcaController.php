@@ -124,7 +124,6 @@ class MarcaController extends Controller
         }
 
         if($request->method() === 'PATCH') {
-
             $regrasDinamicas = array();
 
             //percorrendo todas as regras definidas no Model
@@ -137,11 +136,9 @@ class MarcaController extends Controller
             }
             
             $request->validate($regrasDinamicas, $marca->feedback());
-
         } else {
             $request->validate($marca->rules(), $marca->feedback());
         }
-        
         //remove o arquivo antigo caso um novo arquivo tenha sido enviado no request
         if($request->file('imagem')) {
             Storage::disk('public')->delete($marca->imagem);

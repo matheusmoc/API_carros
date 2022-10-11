@@ -15,10 +15,9 @@ class Carro extends Model
         return [
             'modelo_id' => 'exists:modelos,id',
             'placa' => 'required',
-            'disponivel' => 'require',
+            'disponivel' => 'required',
             'km' => 'required',
         ];
-
     }
     
     public function modelo(){
