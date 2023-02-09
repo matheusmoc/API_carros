@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
@@ -10,19 +10,19 @@ abstract class AbstractRepository {
     {
         $this->model = $model;
     }
-    
-    //relacionamento 
+
+    //relacionamento
     public function selectAtributosRegistrosRelacionados($atributos){
-        
+
         $this->model = $this->model->with($atributos);
         //construção da query
     }
 
     public function filtro($filtros){
         $filtros = explode(';', $filtros);
-            
+
         foreach($filtros as $key => $condicao){
-         
+
         $c = explode(':', $condicao);
         $this->model = $this->model->where($c[0], $c[1], $c[2]);
         //atualizar o atributo do objeto que está guardando a query

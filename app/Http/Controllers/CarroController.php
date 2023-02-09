@@ -15,19 +15,20 @@ class CarroController extends Controller
     public function index(Request $request)
     {
         $carroRepository = new CarroRepository($this->carro);
-        
-        if($request->has('atributos_modelo')){
+
+        if($request->has('atributos_modelo')){ //verificação de atributo
             $atributos_modelo = 'modelo:id,'.$request->atributos_modelo;
             $carroRepository->selectAtributosRegistrosRelacionados( $atributos_modelo );
         }else{
             $carroRepository->selectAtributosRegistrosRelacionados('modelo');
+
         }
 
 
         if($request->has('filtro')){
            $carroRepository->filtro($request->filtro);
         }
-         
+
         if($request->has('atributos')){
             $carroRepository->selectAtributos($request->atributos);
 
@@ -56,7 +57,7 @@ class CarroController extends Controller
         $carro = $this->carro->with('modelo')->find($id);
         if($carro === null) {
             return response()->json(['erro' => 'Recurso pesquisado não existe'], 404) ;
-        } 
+        }
 
         return response()->json($carro, 200);
     }
@@ -76,13 +77,13 @@ class CarroController extends Controller
 
             //percorrendo todas as regras definidas no Model
             foreach($carro->rules() as $input => $regra) {
-                
+
                 //coletar apenas as regras aplicáveis aos parâmetros parciais da requisição PATCH
                 if(array_key_exists($input, $request->all())) {
                     $regrasDinamicas[$input] = $regra;
                 }
             }
-            
+
             $request->validate($regrasDinamicas);
 
         } else {
@@ -102,7 +103,7 @@ class CarroController extends Controller
 
         if($carro === null) {
             return response()->json(['erro' => 'Impossível realizar a exclusão. O recurso solicitado não existe'], 404);
-        }   
+        }
 
         $carro->delete();
         return response()->json(['msg' => 'O carro foi removida com sucesso!'], 200);

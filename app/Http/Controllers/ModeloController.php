@@ -31,7 +31,7 @@ class ModeloController extends Controller
 
         if($request->has('atributos')) {
             $modeloRepository->selectAtributos($request->atributos);
-        } 
+        }
 
         return response()->json($modeloRepository->getResultado(), 200);
     }
@@ -67,7 +67,7 @@ class ModeloController extends Controller
         $modelo = $this->modelo->with('marca')->find($id);
         if($modelo === null) {
             return response()->json(['erro' => 'Recurso pesquisado não existe'], 404) ;
-        } 
+        }
 
         return response()->json($modelo, 200);
     }
@@ -92,24 +92,24 @@ class ModeloController extends Controller
 
             //percorrendo todas as regras definidas no Model
             foreach($modelo->rules() as $input => $regra) {
-                
+
                 //coletar apenas as regras aplicáveis aos parâmetros parciais da requisição PATCH
                 if(array_key_exists($input, $request->all())) {
                     $regrasDinamicas[$input] = $regra;
                 }
             }
-            
+
             $request->validate($regrasDinamicas);
 
         } else {
             $request->validate($modelo->rules());
         }
-        
+
         //remove o arquivo antigo caso um novo arquivo tenha sido enviado no request
         if($request->file('imagem')) {
             Storage::disk('public')->delete($modelo->imagem);
         }
-        
+
         $imagem = $request->file('imagem');
         $imagem_urn = $imagem->store('imagens/modelos', 'public');
 
@@ -145,6 +145,6 @@ class ModeloController extends Controller
 
         $modelo->delete();
         return response()->json(['msg' => 'O modelo foi removida com sucesso!'], 200);
-        
+
     }
 }
